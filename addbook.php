@@ -1,15 +1,18 @@
 <?php
+require 'include/dbconnection.php'
     
 ?>
 <html>
 
 <head>
+    
 	<title>Book Information</title>
     <link href="assets/css/reg.css" rel="stylesheet">
+
 </head>
 
 <body>
-	<form action="" method="post">
+	<form action="db.php" method="post">
 	<h1>Library Database</h1>
 	<fieldset>
 		<legend>Book Information</legend>
@@ -31,9 +34,32 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
+               <?php
+                              $table  = mysqli_query($dbconn , "SELECT * FROM db");
+                              while($row  = mysqli_fetch_array($table)){ ?>
+                                  <tr id="<?php echo $row['id']; ?>">
+                                    <td data-target="title"><?php echo $row['title']; ?></td>
+                                    <td data-target="pages"><?php echo $row['pages']; ?></td>
+                                    <td data-target="author"><?php echo $row['author']; ?></td>
+                                      <td data-target="year"><?php echo $row['year']; ?></td>
+                                    <td>
                 
-                ?>
+                                 
+                                        
+                                     
+                                      </td>
+                                  </tr>
+                             <?php }
+                                
+                                if (isset($_GET['idd'])) {
+                                    $idd = $_GET['idd'];
+                                     $result = mysqli_query($dbconn, "DELETE FROM user WHERE id=$idd");
+                                    echo '<script type="text/javascript">
+                                        window.location = "http://localhost/vnc/adminpanel/users.php"
+                                    </script>';
+                                    }
+
+                           ?>
             </tbody>
         </table>
 	</form>
@@ -45,5 +71,6 @@
 	</script>
 <?php 
     $dbconn->close();
+?>
 </body>
 </html>
